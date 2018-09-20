@@ -10,14 +10,10 @@ var path = require('path'),
 module.exports = function convert(bucket, fileKey) {
 	'use strict';
 	var targetPath, sourcePath;
-	console.log('rsvgBinaryPath', rsvgBinaryPath);
 	console.log('converting', bucket, fileKey);
 	return s3.download(bucket, fileKey).then(function (downloadedPath) {
-		console.log('s3.download')
 		sourcePath = downloadedPath;
 		targetPath = path.join(os.tmpdir(), uuid.v4() + '.pdf');
-		console.log('sourcePath', sourcePath);
-		console.log('targetPath', targetPath);	
 		return cpPromise.spawn(rsvgBinaryPath, [sourcePath, '-o', targetPath, '-f', 'pdf']);
 	}).then(function () {
 		var uploadKey = fileKey.replace(/^in/, 'out').replace(/\.[A-z0-9]+$/, '.pdf');

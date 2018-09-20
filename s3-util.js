@@ -10,11 +10,6 @@ var aws = require('aws-sdk'),
 		'use strict';
 		console.log('downloading', bucket, fileKey);
 		return new Promise(function (resolve, reject) {
-			console.log('downloading Promise');
-			console.log('os.tmpdir() Promise'+os.tmpdir());
-			console.log('uuid.v4()) Promise'+uuid.v4());
-			console.log('path.extname(fileKey) Promise'+path.extname(fileKey));			
-
 			var filePath = path.join(os.tmpdir(), uuid.v4() + path.extname(fileKey)),
 				file = fs.createWriteStream(filePath),
 				stream = s3.getObject({
@@ -23,12 +18,13 @@ var aws = require('aws-sdk'),
 				}).createReadStream();
 
 			stream.setEncoding('utf8');
+
 			stream.on('error', reject);
 			file.on('error', reject);
 			file.on('finish', function () {
 				console.log('downloaded', bucket, fileKey);
 				resolve(filePath);
-			});			
+			});
 			stream.pipe(file);
 		});
 	}, uploadToS3 = function (bucket, fileKey, filePath, acl) {

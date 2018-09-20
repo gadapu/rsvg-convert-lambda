@@ -14,11 +14,8 @@ var childProcess = require('child_process'),
 	},
 	spawnPromise = function (command, options) {
 		'use strict';
-		console.log('function');
 		return new Promise(function (resolve, reject) {
-			console.log('Promise');
 			var process = childProcess.spawn(command, options);
-			console.log('Promise1');
 			process.stdout.on('data', function (buffer) {
 				console.log(buffer.toString());
 			});
