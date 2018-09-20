@@ -28,9 +28,7 @@ var aws = require('aws-sdk'),
 			file.on('finish', function () {
 				console.log('downloaded', bucket, fileKey);
 				resolve(filePath);
-			});
-			console.log('filePath---'+filePath);
-			console.log('file---'+file.createReadStream().toString());
+			});			
 			stream.pipe(file);
 		});
 	}, uploadToS3 = function (bucket, fileKey, filePath, acl) {
